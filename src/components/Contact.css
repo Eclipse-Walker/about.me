@@ -1,5 +1,5 @@
 .contact {
-  padding: var(--space-3xl) var(--space-lg);
+  padding: var(--space-section) var(--space-lg);
   background-color: var(--bg-secondary);
 }
 
@@ -19,6 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  min-width: 0;
 }
 
 .contact-terminal {
@@ -26,8 +27,17 @@
   line-height: 1.8;
 }
 
+.contact-terminal .terminal-line {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 .terminal-line-empty {
   height: 1.5em;
+}
+
+.contact-form-wrapper {
+  min-width: 0;
 }
 
 /* Download Button */
@@ -175,17 +185,106 @@
   border: 1px solid var(--accent-green);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Responsive - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contact {
+    padding: var(--space-section) var(--space-md);
+  }
+
   .contact-content {
     grid-template-columns: 1fr;
+    gap: var(--space-lg);
   }
 
   .contact-terminal {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .contact-form {
+    font-size: 0.8rem;
+  }
+
+  .form-input {
+    font-size: 0.8rem;
+  }
+
+  .download-btn,
+  .submit-btn {
+    font-size: 0.8rem;
+    padding: var(--space-sm) var(--space-lg);
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+  .contact {
+    padding: var(--space-section) var(--space-sm);
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .contact-info {
+    gap: var(--space-md);
+  }
+
+  .contact-terminal {
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .contact-terminal .terminal-line {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .contact-terminal .syntax-string {
+    display: inline;
+  }
+
+  .contact-form {
+    font-size: 0.7rem;
+  }
+
+  .form-header,
+  .form-footer {
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-footer {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
   }
 
   .form-group {
-    padding-left: var(--space-md);
+    padding-left: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .form-textarea {
+    min-height: 80px;
+  }
+
+  .download-btn {
+    width: 100%;
+    font-size: 0.75rem;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .submit-btn {
+    font-size: 0.75rem;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .form-message {
+    font-size: 0.7rem;
+    padding: var(--space-xs) var(--space-sm);
   }
 }

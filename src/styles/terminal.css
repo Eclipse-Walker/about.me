@@ -63,6 +63,34 @@
   padding: var(--space-lg);
   font-family: var(--font-mono);
   line-height: 1.6;
+  overflow-x: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Mobile Terminal Adjustments */
+@media (max-width: 767px) {
+  .terminal-body {
+    padding: var(--space-md);
+  }
+
+  .terminal-header {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .terminal-dots {
+    gap: 5px;
+  }
+
+  .terminal-title {
+    font-size: 0.65rem;
+    margin-right: 45px;
+  }
 }
 
 /* Terminal Prompt */
