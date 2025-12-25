@@ -1,0 +1,254 @@
+import { useState } from 'react';
+import { resumeData } from '../data/resume';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { TerminalWindow } from './TerminalWindow';
+import './Contact.css';
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export function Contact() {
+  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setIsSubmitting(false);
+    setSubmitStatus('success');
+    setFormData({ name: '', email: '', message: '' });
+
+    setTimeout(() => setSubmitStatus('idle'), 3000);
+  };
+
+  const handleDownloadCV = () => {
+    // Create a simple text-based CV for download
+    const cvContent = `
+${resumeData.name}
+${resumeData.title}
+
+LinkedIn: ${resumeData.links.linkedin}
+GitHub: ${resumeData.links.github}
+
+EXPERIENCE
+${resumeData.experiences
+  .map(
+    (exp) => `
+${exp.role} @ ${exp.company}
+${exp.period} | ${exp.location}
+${exp.responsibilities.map((r) => `- ${r}`).join('\n')}
+`,
+  )
+  .join('\n')}
+
+SKILLS
+${resumeData.skills.map((cat) => `${cat.name}: ${cat.skills.join(', ')}`).join('\n')}
+
+EDUCATION
+${resumeData.education.degree}, ${resumeData.education.field}
+${resumeData.education.institution}
+${resumeData.education.period}
+
+LANGUAGES
+${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
+`.trim();
+
+    const blob = new Blob([cvContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'phisanurat-cv.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <section id="contact" className="contact" ref={ref}>
+      <div className="contact-container">
+        <h2
+          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        >
+          <span className="title-prefix">04.</span> Contact
+        </h2>
+
+        <div className="contact-content">
+          <div
+            className={`contact-info scroll-animate stagger-1 ${isVisible ? 'visible' : ''}`}
+          >
+            <TerminalWindow title="contact.sh">
+              <div className="contact-terminal">
+                <div className="terminal-line">
+                  <span className="syntax-comment"># Get in touch</span>
+                </div>
+                <div className="terminal-line">
+                  <span className="syntax-keyword">echo</span>{' '}
+                  <span className="syntax-string">
+                    "I'm always open to discussing new projects and
+                    opportunities."
+                  </span>
+                </div>
+                <div className="terminal-line terminal-line-empty" />
+                <div className="terminal-line">
+                  <span className="syntax-comment"># Connect with me</span>
+                </div>
+                <div className="terminal-line">
+                  <span className="syntax-variable">LINKEDIN</span>=
+                  <span className="syntax-string">
+                    "{resumeData.links.linkedin}"
+                  </span>
+                </div>
+                <div className="terminal-line">
+                  <span className="syntax-variable">GITHUB</span>=
+                  <span className="syntax-string">
+                    "{resumeData.links.github}"
+                  </span>
+                </div>
+              </div>
+            </TerminalWindow>
+
+            <button
+              type="button"
+              className="download-btn"
+              onClick={handleDownloadCV}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Download CV
+            </button>
+          </div>
+
+          <div
+            className={`contact-form-wrapper scroll-animate stagger-2 ${isVisible ? 'visible' : ''}`}
+          >
+            <TerminalWindow title="send-message.tsx">
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-header">
+                  <span className="syntax-keyword">const</span>{' '}
+                  <span className="syntax-function">sendMessage</span>{' '}
+                  <span className="syntax-keyword">=</span>{' '}
+                  <span className="syntax-keyword">{'{'}</span>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="name" className="form-label">
+                    <span className="syntax-variable">name</span>
+                    <span className="syntax-keyword">:</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label">
+                    <span className="syntax-variable">email</span>
+                    <span className="syntax-keyword">:</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message" className="form-label">
+                    <span className="syntax-variable">message</span>
+                    <span className="syntax-keyword">:</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="form-input form-textarea"
+                    placeholder="Your message..."
+                    rows={4}
+                  />
+                </div>
+
+                <div className="form-footer">
+                  <span className="syntax-keyword">{'}'}</span>
+                </div>
+
+                <button
+                  type="submit"
+                  className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <span className="btn-prefix">$</span>
+                      Send Message
+                    </>
+                  )}
+                </button>
+
+                {submitStatus === 'success' && (
+                  <div className="form-message success">
+                    <span className="syntax-comment">
+                      {'// Message sent successfully!'}
+                    </span>
+                  </div>
+                )}
+              </form>
+            </TerminalWindow>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
