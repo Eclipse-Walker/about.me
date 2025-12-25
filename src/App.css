@@ -136,8 +136,27 @@ a:hover {
   font-size: 1.25rem;
 }
 
-/* Responsive Typography */
-@media (max-width: 768px) {
+/* Responsive Typography - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  body {
+    font-size: 15px;
+  }
+
+  .section-title {
+    font-size: 1.625rem;
+  }
+
+  .title-prefix {
+    font-size: 1.125rem;
+  }
+
+  .footer {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
+
+/* Responsive Typography - Mobile */
+@media (max-width: 767px) {
   body {
     font-size: 14px;
   }
@@ -148,5 +167,17 @@ a:hover {
 
   .title-prefix {
     font-size: 1rem;
+  }
+
+  .footer {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .footer-text {
+    font-size: 0.8rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.7rem;
   }
 }

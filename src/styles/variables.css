@@ -62,6 +62,30 @@
   /* Container */
   --container-max: 1200px;
   --navbar-height: 60px;
+
+  /* Breakpoints (for reference in comments) */
+  /* Mobile: < 768px */
+  /* Tablet: 768px - 1023px */
+  /* Desktop: >= 1024px */
+
+  /* Responsive Spacing */
+  --space-section: var(--space-3xl);
+}
+
+/* Tablet Adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --space-section: var(--space-2xl);
+    --navbar-height: 56px;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 767px) {
+  :root {
+    --space-section: var(--space-xl);
+    --navbar-height: 52px;
+  }
 }
 
 /* Light Theme */
