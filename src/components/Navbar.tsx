@@ -1,3 +1,11 @@
+import {
+  Briefcase,
+  Code2,
+  type LucideIcon,
+  Mail,
+  Terminal,
+  User,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import './Navbar.css';
@@ -7,11 +15,17 @@ interface NavbarProps {
   onThemeToggle: () => void;
 }
 
-const navLinks = [
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'contact', label: 'Contact' },
+interface NavLink {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+}
+
+const navLinks: NavLink[] = [
+  { id: 'about', label: 'About', icon: User },
+  { id: 'experience', label: 'Experience', icon: Briefcase },
+  { id: 'skills', label: 'Skills', icon: Code2 },
+  { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
 export function Navbar({ theme, onThemeToggle }: NavbarProps) {
@@ -58,6 +72,7 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
     <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-container">
         <button type="button" className="navbar-logo" onClick={scrollToTop}>
+          <Terminal size={20} className="logo-icon" aria-hidden="true" />
           <span className="logo-bracket">{'{'}</span>
           <span className="logo-text">PW</span>
           <span className="logo-bracket">{'}'}</span>
@@ -75,17 +90,24 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
         </button>
 
         <div className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
-          {navLinks.map((link) => (
-            <button
-              type="button"
-              key={link.id}
-              className={`navbar-link ${activeSection === link.id ? 'active' : ''}`}
-              onClick={() => scrollToSection(link.id)}
-            >
-              <span className="link-prefix">./</span>
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) => {
+            const IconComponent = link.icon;
+            return (
+              <button
+                type="button"
+                key={link.id}
+                className={`navbar-link ${activeSection === link.id ? 'active' : ''}`}
+                onClick={() => scrollToSection(link.id)}
+              >
+                <IconComponent
+                  size={16}
+                  className="link-icon"
+                  aria-hidden="true"
+                />
+                {link.label}
+              </button>
+            );
+          })}
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
         </div>
       </div>

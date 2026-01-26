@@ -72,17 +72,28 @@
 }
 
 .experience-company {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
   font-family: var(--font-mono);
   color: var(--text-primary);
 }
 
 .experience-period {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
   font-family: var(--font-mono);
+  color: var(--text-secondary);
 }
 
 .experience-location {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
   font-family: var(--font-mono);
   font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 .experience-list {
@@ -104,7 +115,6 @@
 .item-bullet {
   flex-shrink: 0;
   color: var(--accent-green);
-  font-family: var(--font-mono);
 }
 
 /* Responsive - Tablet */

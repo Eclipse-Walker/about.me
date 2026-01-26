@@ -36,6 +36,26 @@
   height: 1.5em;
 }
 
+/* Terminal Links */
+.terminal-link {
+  color: var(--accent-orange);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.terminal-link:hover {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
+/* Terminal Icons */
+.terminal-icon {
+  color: var(--accent-blue);
+  margin-right: var(--space-xs);
+  vertical-align: middle;
+}
+
 .contact-form-wrapper {
   min-width: 0;
 }
@@ -111,7 +131,7 @@
 .form-input:focus {
   outline: none;
   border-color: var(--accent-green);
-  box-shadow: 0 0 0 2px rgba(78, 201, 176, 0.2);
+  box-shadow: 0 0 0 2px rgba(63, 185, 80, 0.2);
 }
 
 .form-input::placeholder {
@@ -158,12 +178,7 @@
 
 /* Spinner */
 .spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid transparent;
-  border-top-color: currentColor;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -181,7 +196,7 @@
 }
 
 .form-message.success {
-  background-color: rgba(78, 201, 176, 0.1);
+  background-color: rgba(63, 185, 80, 0.1);
   border: 1px solid var(--accent-green);
 }
 

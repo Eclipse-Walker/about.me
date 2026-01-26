@@ -1,3 +1,4 @@
+import { ChevronDown, Github, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { resumeData } from '../data/resume';
 import { TerminalWindow } from './TerminalWindow';
@@ -90,7 +91,7 @@ export function Hero() {
               className="hero-btn hero-btn-primary"
               onClick={scrollToContact}
             >
-              <span className="btn-icon">$</span>
+              <Mail size={18} aria-hidden="true" />
               Get in Touch
             </button>
             <a
@@ -99,7 +100,7 @@ export function Hero() {
               rel="noopener noreferrer"
               className="hero-btn hero-btn-secondary"
             >
-              <span className="btn-icon">{'>'}</span>
+              <Github size={18} aria-hidden="true" />
               View GitHub
             </a>
           </div>
@@ -107,17 +108,7 @@ export function Hero() {
           <div className="hero-scroll-indicator">
             <span className="scroll-text">scroll down</span>
             <div className="scroll-arrow">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                aria-hidden="true"
-              >
-                <path d="M12 5v14M19 12l-7 7-7-7" />
-              </svg>
+              <ChevronDown size={24} aria-hidden="true" />
             </div>
           </div>
         </div>

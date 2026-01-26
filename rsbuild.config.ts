@@ -3,8 +3,18 @@ import { pluginReact } from '@rsbuild/plugin-react';
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
+  html: {
+    title: 'Phisanurat W.',
+  },
+
   plugins: [pluginReact()],
   output: {
-    assetPrefix: process.env.GITHUB_ACTIONS ? '/about.me/' : '/',
+    // Use globalThis.process for compatibility with Node and browser-like environments
+    assetPrefix:
+      typeof globalThis !== 'undefined' &&
+      typeof globalThis.process === 'object' &&
+      globalThis.process?.env?.GITHUB_ACTIONS
+        ? '/about.me/'
+        : '/',
   },
 });

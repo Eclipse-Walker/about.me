@@ -56,12 +56,13 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-secondary);
-  margin-right: 54px; /* Offset for dots */
+  margin-right: 54px;
 }
 
 .terminal-body {
   padding: var(--space-lg);
   font-family: var(--font-mono);
+  font-size: 0.875rem;
   line-height: 1.6;
   overflow-x: auto;
   word-wrap: break-word;
