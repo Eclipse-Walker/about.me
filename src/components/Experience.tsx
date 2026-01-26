@@ -1,3 +1,4 @@
+import { Building2, Calendar, ChevronRight, MapPin } from 'lucide-react';
 import { resumeData } from '../data/resume';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { TerminalWindow } from './TerminalWindow';
@@ -38,17 +39,17 @@ export function Experience() {
                     </h3>
                     <div className="experience-meta">
                       <span className="experience-company">
-                        <span className="syntax-keyword">@</span> {exp.company}
+                        <Building2 size={14} aria-hidden="true" />
+                        {exp.company}
                       </span>
                       <span className="experience-period">
-                        <span className="syntax-comment">
-                          {'// '}
-                          {exp.period}
-                        </span>
+                        <Calendar size={14} aria-hidden="true" />
+                        {exp.period}
                       </span>
                     </div>
                     <span className="experience-location">
-                      <span className="syntax-string">"{exp.location}"</span>
+                      <MapPin size={14} aria-hidden="true" />
+                      {exp.location}
                     </span>
                   </div>
 
@@ -58,7 +59,11 @@ export function Experience() {
                         key={`resp-${exp.company}-${i}`}
                         className="experience-item"
                       >
-                        <span className="item-bullet">{'>'}</span>
+                        <ChevronRight
+                          size={14}
+                          className="item-bullet"
+                          aria-hidden="true"
+                        />
                         <span>{item}</span>
                       </li>
                     ))}

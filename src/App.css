@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Global Styles - Clean Terminal */
 *,
 *::before,
 *::after {
@@ -64,7 +64,7 @@ a {
 }
 
 a:hover {
-  color: var(--accent-cyan);
+  color: var(--accent-blue);
 }
 
 /* Focus Styles */
@@ -76,7 +76,7 @@ a:hover {
 /* Footer */
 .footer {
   padding: var(--space-xl) var(--space-lg);
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
 }
 
@@ -90,6 +90,7 @@ a:hover {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   margin-bottom: var(--space-sm);
+  color: var(--text-secondary);
 }
 
 .footer-copyright {

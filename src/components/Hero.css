@@ -98,11 +98,6 @@
   color: var(--accent-blue);
 }
 
-.btn-icon {
-  color: inherit;
-  opacity: 0.7;
-}
-
 /* Scroll Indicator */
 .hero-scroll-indicator {
   display: flex;

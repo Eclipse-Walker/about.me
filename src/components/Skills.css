@@ -26,6 +26,17 @@
   font-family: var(--font-mono);
 }
 
+.skill-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.skill-icon {
+  color: var(--accent-blue);
+}
+
 .skill-list {
   padding-left: var(--space-lg);
   margin: var(--space-sm) 0;
