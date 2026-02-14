@@ -1,6 +1,7 @@
 import {
   Briefcase,
   Code2,
+  Github,
   type LucideIcon,
   Mail,
   Terminal,
@@ -25,6 +26,7 @@ const navLinks: NavLink[] = [
   { id: 'about', label: 'About', icon: User },
   { id: 'experience', label: 'Experience', icon: Briefcase },
   { id: 'skills', label: 'Skills', icon: Code2 },
+  { id: 'github', label: 'GitHub', icon: Github },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
 

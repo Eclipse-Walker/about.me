@@ -10,7 +10,7 @@ describe('Contact', () => {
 
   test('renders section number', () => {
     render(<Contact />);
-    expect(screen.getByText('04.')).toBeInTheDocument();
+    expect(screen.getByText('05.')).toBeInTheDocument();
   });
 
   test('renders contact form fields', () => {
