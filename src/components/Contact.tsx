@@ -1,7 +1,12 @@
 import { Download, Github, Linkedin, Loader2, Send } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { resumeData } from '../data/resume';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import {
+  sectionTitleVariants,
+  staggerItemVariants,
+  viewportSettings,
+} from '../motion/variants';
 import { TerminalWindow } from './TerminalWindow';
 import './Contact.css';
 
@@ -12,7 +17,6 @@ interface FormData {
 }
 
 export function Contact() {
-  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -88,17 +92,26 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
   };
 
   return (
-    <section id="contact" className="contact" ref={ref}>
+    <section id="contact" className="contact">
       <div className="contact-container">
-        <h2
-          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        <motion.h2
+          className="section-title"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionTitleVariants}
         >
           <span className="title-prefix">05.</span> Contact
-        </h2>
+        </motion.h2>
 
         <div className="contact-content">
-          <div
-            className={`contact-info scroll-animate stagger-1 ${isVisible ? 'visible' : ''}`}
+          <motion.div
+            className="contact-info"
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportSettings}
+            variants={staggerItemVariants}
+            custom={0}
           >
             <TerminalWindow title="contact.sh">
               <div className="contact-terminal">
@@ -159,10 +172,15 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
               <Download size={18} aria-hidden="true" />
               Download CV
             </button>
-          </div>
+          </motion.div>
 
-          <div
-            className={`contact-form-wrapper scroll-animate stagger-2 ${isVisible ? 'visible' : ''}`}
+          <motion.div
+            className="contact-form-wrapper"
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportSettings}
+            variants={staggerItemVariants}
+            custom={1}
           >
             <TerminalWindow title="send-message.tsx">
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -259,7 +277,7 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                 )}
               </form>
             </TerminalWindow>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

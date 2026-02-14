@@ -6,13 +6,14 @@
   "scripts": {
     "build": "rsbuild build",
     "check": "biome check --write",
-    "dev": "rsbuild dev --open",
+    "dev": "rsbuild dev --open --port 3000 --server.strictPort",
     "format": "biome format --write",
     "preview": "rsbuild preview",
     "test": "rstest",
     "test:watch": "rstest --watch"
   },
   "dependencies": {
+    "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

@@ -1,8 +1,13 @@
 import { ExternalLink, GitBranch } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
 import 'react-github-calendar/tooltips.css';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import {
+  blockVariants,
+  sectionTitleVariants,
+  viewportSettings,
+} from '../motion/variants';
 import { TerminalWindow } from './TerminalWindow';
 import './GitHubContributions.css';
 
@@ -35,7 +40,8 @@ function getColorScheme(): ColorScheme {
 }
 
 export function GitHubContributions() {
-  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useInView(sectionRef, viewportSettings);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(getColorScheme);
 
   useEffect(() => {
@@ -59,16 +65,24 @@ export function GitHubContributions() {
   }, []);
 
   return (
-    <section id="github" className="github" ref={ref}>
+    <section id="github" className="github" ref={sectionRef}>
       <div className="github-container">
-        <h2
-          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        <motion.h2
+          className="section-title"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionTitleVariants}
         >
           <span className="title-prefix">04.</span> GitHub Activity
-        </h2>
+        </motion.h2>
 
-        <div
-          className={`github-content scroll-animate stagger-1 ${isVisible ? 'visible' : ''}`}
+        <motion.div
+          className="github-content"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={blockVariants}
         >
           <TerminalWindow title="contributions.tsx">
             <div className="github-header">
@@ -117,7 +131,7 @@ export function GitHubContributions() {
               )}
             </div>
           </TerminalWindow>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

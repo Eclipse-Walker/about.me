@@ -1,26 +1,38 @@
 import { Building2, Calendar, ChevronRight, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { resumeData } from '../data/resume';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import {
+  sectionTitleVariants,
+  staggerItemVariants,
+  viewportSettings,
+} from '../motion/variants';
 import { TerminalWindow } from './TerminalWindow';
 import './Experience.css';
 
 export function Experience() {
-  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
-
   return (
-    <section id="experience" className="experience" ref={ref}>
+    <section id="experience" className="experience">
       <div className="experience-container">
-        <h2
-          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        <motion.h2
+          className="section-title"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionTitleVariants}
         >
           <span className="title-prefix">02.</span> Experience
-        </h2>
+        </motion.h2>
 
         <div className="experience-timeline">
           {resumeData.experiences.map((exp, index) => (
-            <div
+            <motion.div
               key={`${exp.company}-${exp.period}`}
-              className={`timeline-item scroll-animate stagger-${index + 1} ${isVisible ? 'visible' : ''}`}
+              className="timeline-item"
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportSettings}
+              variants={staggerItemVariants}
+              custom={index}
             >
               <div className="timeline-marker">
                 <span className="timeline-dot" />
@@ -70,7 +82,7 @@ export function Experience() {
                   </ul>
                 </div>
               </TerminalWindow>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
