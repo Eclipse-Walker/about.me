@@ -20,6 +20,7 @@ describe('App', () => {
     expect(screen.getAllByText('About').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Experience').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Skills').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('GitHub').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0);
   });
 

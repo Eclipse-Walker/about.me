@@ -1,0 +1,87 @@
+.github {
+  padding: var(--space-3xl) var(--space-lg);
+}
+
+.github-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.github-content .terminal-window {
+  width: 100%;
+}
+
+.github-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.github-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.github-icon {
+  color: var(--accent-blue);
+}
+
+.github-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.github-calendar-wrapper {
+  margin-top: var(--space-lg);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: var(--space-sm);
+}
+
+.github-calendar-wrapper .react-activity-calendar {
+  width: max-content;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.github-calendar-wrapper .react-activity-calendar text {
+  fill: var(--text-secondary);
+}
+
+.github-calendar-wrapper .react-activity-calendar rect {
+  stroke: var(--border-color);
+}
+
+.github-loading-text {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+/* Responsive - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .github {
+    padding: var(--space-section) var(--space-md);
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+  .github {
+    padding: var(--space-section) var(--space-sm);
+  }
+
+  .github-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -93,7 +93,7 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
         <h2
           className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
         >
-          <span className="title-prefix">04.</span> Contact
+          <span className="title-prefix">05.</span> Contact
         </h2>
 
         <div className="contact-content">

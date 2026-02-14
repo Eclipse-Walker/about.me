@@ -6,6 +6,7 @@ import './App.css';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
 import { Experience } from './components/Experience';
+import { GitHubContributions } from './components/GitHubContributions';
 import { Hero } from './components/Hero';
 import { Navbar } from './components/Navbar';
 import { Skills } from './components/Skills';
@@ -22,6 +23,7 @@ function App() {
         <About />
         <Experience />
         <Skills />
+        <GitHubContributions />
         <Contact />
       </main>
       <footer className="footer">
