@@ -1,23 +1,34 @@
 import { Github, Linkedin } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { resumeData } from '../data/resume';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import {
+  blockVariants,
+  sectionTitleVariants,
+  viewportSettings,
+} from '../motion/variants';
 import { TerminalWindow } from './TerminalWindow';
 import './About.css';
 
 export function About() {
-  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
-
   return (
-    <section id="about" className="about" ref={ref}>
+    <section id="about" className="about">
       <div className="about-container">
-        <h2
-          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        <motion.h2
+          className="section-title"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionTitleVariants}
         >
           <span className="title-prefix">01.</span> About Me
-        </h2>
+        </motion.h2>
 
-        <div
-          className={`about-content scroll-animate stagger-1 ${isVisible ? 'visible' : ''}`}
+        <motion.div
+          className="about-content"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={blockVariants}
         >
           <TerminalWindow title="about.json">
             <div className="about-json">
@@ -107,7 +118,7 @@ export function About() {
               <span>GitHub</span>
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -8,8 +8,13 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { resumeData } from '../data/resume';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import {
+  sectionTitleVariants,
+  staggerItemVariants,
+  viewportSettings,
+} from '../motion/variants';
 import { TerminalWindow } from './TerminalWindow';
 import './Skills.css';
 
@@ -24,24 +29,31 @@ const categoryIcons: Record<string, LucideIcon> = {
 };
 
 export function Skills() {
-  const [ref, isVisible] = useScrollAnimation<HTMLElement>();
-
   return (
-    <section id="skills" className="skills" ref={ref}>
+    <section id="skills" className="skills">
       <div className="skills-container">
-        <h2
-          className={`section-title scroll-animate ${isVisible ? 'visible' : ''}`}
+        <motion.h2
+          className="section-title"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          variants={sectionTitleVariants}
         >
           <span className="title-prefix">03.</span> Skills
-        </h2>
+        </motion.h2>
 
         <div className="skills-grid">
           {resumeData.skills.map((category, index) => {
             const IconComponent = categoryIcons[category.name] || Code2;
             return (
-              <div
+              <motion.div
                 key={category.name}
-                className={`skill-card scroll-animate stagger-${index + 1} ${isVisible ? 'visible' : ''}`}
+                className="skill-card"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportSettings}
+                variants={staggerItemVariants}
+                custom={index}
               >
                 <TerminalWindow
                   title={`${category.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.ts`}
@@ -86,7 +98,7 @@ export function Skills() {
                     </div>
                   </div>
                 </TerminalWindow>
-              </div>
+              </motion.div>
             );
           })}
         </div>
