@@ -8,6 +8,21 @@ Install the dependencies:
 bun install
 ```
 
+Set environment variables for EmailJS:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+
+- `PUBLIC_EMAILJS_SERVICE_ID`
+- `PUBLIC_EMAILJS_TEMPLATE_ID`
+- `PUBLIC_EMAILJS_PUBLIC_KEY`
+- `PUBLIC_RECAPTCHA_SITE_KEY`
+
+EmailJS SDK docs: https://www.emailjs.com/docs/sdk/installation/
+
 ## Get started
 
 Start the dev server, and the app will be available at [http://localhost:3000](http://localhost:3000).
