@@ -6,6 +6,10 @@ export default defineConfig({
   html: {
     title: 'Phisanurat W.',
   },
+  server: {
+    port: 3000,
+    strictPort: true,
+  },
 
   plugins: [pluginReact()],
   output: {

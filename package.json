@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rsbuild build",
     "check": "biome check --write",
-    "dev": "rsbuild dev --open --port 3000 --server.strictPort",
+    "dev": "rsbuild dev --open --port 3000",
     "format": "biome format --write",
     "preview": "rsbuild preview",
     "test": "rstest",
