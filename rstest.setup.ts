@@ -1,6 +1,7 @@
-import { afterEach, expect } from '@rstest/core';
+import { afterEach, expect, rstest } from '@rstest/core';
 import * as jestDomMatchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
+import { createElement, forwardRef, useImperativeHandle } from 'react';
 
 expect.extend(jestDomMatchers);
 
@@ -45,4 +46,25 @@ Object.defineProperty(URL, 'createObjectURL', {
 Object.defineProperty(URL, 'revokeObjectURL', {
   writable: true,
   value: () => {},
+});
+
+// Mock reCAPTCHA to avoid loading external Google scripts in test environment.
+rstest.mock('react-google-recaptcha', () => {
+  const MockReCAPTCHA = forwardRef((_, ref) => {
+    useImperativeHandle(ref, () => ({
+      getValue: () => 'mock-recaptcha-token',
+      reset: () => {},
+      execute: () => {},
+      executeAsync: async () => 'mock-recaptcha-token',
+      getWidgetId: () => 0,
+    }));
+
+    return createElement('div', {
+      'data-testid': 'recaptcha-mock',
+    });
+  });
+
+  return {
+    default: MockReCAPTCHA,
+  };
 });

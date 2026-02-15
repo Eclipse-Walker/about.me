@@ -143,6 +143,14 @@
   min-height: 100px;
 }
 
+.recaptcha-group {
+  padding-left: 0;
+}
+
+.recaptcha-group > div {
+  display: inline-block;
+}
+
 /* Submit Button */
 .submit-btn {
   display: inline-flex;
@@ -198,6 +206,11 @@
 .form-message.success {
   background-color: rgba(63, 185, 80, 0.1);
   border: 1px solid var(--accent-green);
+}
+
+.form-message.error {
+  background-color: rgba(248, 81, 73, 0.1);
+  border: 1px solid var(--accent-red);
 }
 
 /* Responsive - Tablet */
@@ -276,6 +289,11 @@
   .form-group {
     padding-left: var(--space-sm);
     margin-bottom: var(--space-sm);
+  }
+
+  .recaptcha-group > div {
+    transform: scale(0.92);
+    transform-origin: left top;
   }
 
   .form-input {

@@ -47,4 +47,23 @@ describe('Contact', () => {
     expect(emailInput.value).toBe('john@example.com');
     expect(messageInput.value).toBe('Hello!');
   });
+
+  test('shows error when EmailJS is not configured', async () => {
+    render(<Contact />);
+
+    fireEvent.change(screen.getByLabelText(/name/i), {
+      target: { value: 'John Doe' },
+    });
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'john@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText(/message/i), {
+      target: { value: 'Hello!' },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('Email service is not configured yet.');
+  });
 });

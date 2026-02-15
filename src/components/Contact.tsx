@@ -1,6 +1,8 @@
-import { Download, Github, Linkedin, Loader2, Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { Download, Github, Linkedin, Loader2, Send } from 'lucide-react';
+import { useRef, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { resumeData } from '../data/resume';
 import {
   sectionTitleVariants,
@@ -17,6 +19,7 @@ interface FormData {
 }
 
 export function Contact() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -26,6 +29,8 @@ export function Contact() {
   const [submitStatus, setSubmitStatus] = useState<
     'idle' | 'success' | 'error'
   >('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
+  const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -36,15 +41,65 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitStatus('idle');
+    setSubmitMessage('');
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+    const recaptchaToken = recaptchaRef.current?.getValue();
 
-    setIsSubmitting(false);
-    setSubmitStatus('success');
-    setFormData({ name: '', email: '', message: '' });
+    if (!serviceId || !templateId || !publicKey) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Email service is not configured yet.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
 
+    if (!recaptchaToken) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Please verify that you are not a robot.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          ...formData,
+          'g-recaptcha-response': recaptchaToken,
+        },
+        {
+          publicKey,
+        },
+      );
+
+      setSubmitStatus('success');
+      setSubmitMessage('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+      recaptchaRef.current?.reset();
+    } catch {
+      setSubmitStatus('error');
+      setSubmitMessage('Unable to send your message. Please try again.');
+      recaptchaRef.current?.reset();
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    }
+  };
+
+  const handleRecaptchaExpired = () => {
+    recaptchaRef.current?.reset();
+  };
+
+  const handleRecaptchaErrored = () => {
+    setSubmitStatus('error');
+    setSubmitMessage('Captcha failed to load. Please refresh and try again.');
     setTimeout(() => setSubmitStatus('idle'), 3000);
   };
 
@@ -246,6 +301,15 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                   <span className="syntax-keyword">{'}'}</span>
                 </div>
 
+                <div className="form-group recaptcha-group">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={recaptchaSiteKey}
+                    onExpired={handleRecaptchaExpired}
+                    onErrored={handleRecaptchaErrored}
+                  />
+                </div>
+
                 <button
                   type="submit"
                   className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
@@ -269,10 +333,15 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                 </button>
 
                 {submitStatus === 'success' && (
-                  <div className="form-message success">
+                  <output className="form-message success" aria-live="polite">
                     <span className="syntax-comment">
-                      {'// Message sent successfully!'}
+                      {`// ${submitMessage}`}
                     </span>
+                  </output>
+                )}
+                {submitStatus === 'error' && (
+                  <div className="form-message error" role="alert">
+                    <span className="syntax-comment">{`// ${submitMessage}`}</span>
                   </div>
                 )}
               </form>
