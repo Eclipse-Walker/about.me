@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "check": "biome check --write",
+    "check": "bun run lint && bun run test",
     "dev": "rsbuild dev --open --port 3000",
     "format": "biome format --write",
+    "lint": "biome check .",
     "preview": "rsbuild preview",
     "test": "rstest",
     "test:watch": "rstest --watch"

@@ -18,6 +18,10 @@ interface FormData {
   message: string;
 }
 
+const SUBMIT_THROTTLE_MS = 15000;
+const MAX_NAME_LENGTH = 120;
+const MAX_MESSAGE_LENGTH = 3000;
+
 export function Contact() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -25,12 +29,22 @@ export function Contact() {
     email: '',
     message: '',
   });
+  const [website, setWebsite] = useState('');
+  const [lastSubmitAt, setLastSubmitAt] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     'idle' | 'success' | 'error'
   >('idle');
   const [submitMessage, setSubmitMessage] = useState('');
   const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY ?? '';
+  const allowedOrigins = (import.meta.env.PUBLIC_ALLOWED_ORIGINS ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  const isAllowedOrigin =
+    typeof window === 'undefined' ||
+    allowedOrigins.length === 0 ||
+    allowedOrigins.includes(window.location.origin);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -45,6 +59,63 @@ export function Contact() {
     setSubmitMessage('');
     setIsSubmitting(true);
 
+    const now = Date.now();
+    const normalizedFormData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      message: formData.message.trim(),
+    };
+
+    if (website.trim()) {
+      setIsSubmitting(false);
+      setSubmitStatus('success');
+      setSubmitMessage('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+      setWebsite('');
+      recaptchaRef.current?.reset();
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    if (!isAllowedOrigin) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('This form is not available from this site origin.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    if (now - lastSubmitAt < SUBMIT_THROTTLE_MS) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Please wait a few seconds before sending again.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    if (
+      !normalizedFormData.name ||
+      !normalizedFormData.email ||
+      !normalizedFormData.message
+    ) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Please complete all required fields.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    if (
+      normalizedFormData.name.length > MAX_NAME_LENGTH ||
+      normalizedFormData.message.length > MAX_MESSAGE_LENGTH
+    ) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Input exceeds allowed length.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
     const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
@@ -58,6 +129,14 @@ export function Contact() {
       return;
     }
 
+    if (!recaptchaSiteKey) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setSubmitMessage('Captcha is not configured yet.');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
     if (!recaptchaToken) {
       setIsSubmitting(false);
       setSubmitStatus('error');
@@ -66,12 +145,14 @@ export function Contact() {
       return;
     }
 
+    setLastSubmitAt(now);
+
     try {
       await emailjs.send(
         serviceId,
         templateId,
         {
-          ...formData,
+          ...normalizedFormData,
           'g-recaptcha-response': recaptchaToken,
         },
         {
@@ -257,6 +338,8 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    autoComplete="name"
+                    maxLength={MAX_NAME_LENGTH}
                     required
                     className="form-input"
                     placeholder="Your name"
@@ -274,6 +357,7 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="email"
                     required
                     className="form-input"
                     placeholder="your@email.com"
@@ -290,10 +374,24 @@ ${resumeData.languages.map((l) => `${l.name}: ${l.proficiency}`).join('\n')}
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
+                    maxLength={MAX_MESSAGE_LENGTH}
                     required
                     className="form-input form-textarea"
                     placeholder="Your message..."
                     rows={4}
+                  />
+                </div>
+
+                <div className="hp-field" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    autoComplete="off"
+                    tabIndex={-1}
                   />
                 </div>
 

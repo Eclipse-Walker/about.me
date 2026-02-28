@@ -1,5 +1,5 @@
-import { Github, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Github, Linkedin } from 'lucide-react';
 import { resumeData } from '../data/resume';
 import {
   blockVariants,
