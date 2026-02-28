@@ -1,5 +1,5 @@
-import { ChevronDown, Github, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { ChevronDown, Github, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { resumeData } from '../data/resume';
 import { TerminalWindow } from './TerminalWindow';

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import {
   BookOpen,
   Code2,
@@ -8,7 +9,6 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { resumeData } from '../data/resume';
 import {
   sectionTitleVariants,

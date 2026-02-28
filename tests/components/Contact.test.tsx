@@ -66,4 +66,28 @@ describe('Contact', () => {
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('Email service is not configured yet.');
   });
+
+  test('does not send request when honeypot field is filled', async () => {
+    render(<Contact />);
+
+    fireEvent.change(screen.getByLabelText(/name/i), {
+      target: { value: 'John Doe' },
+    });
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'john@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText(/message/i), {
+      target: { value: 'Hello!' },
+    });
+    fireEvent.change(screen.getByLabelText(/website/i), {
+      target: { value: 'https://spam.example' },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
+
+    const successMessage = await screen.findByText(
+      /Message sent successfully!/i,
+    );
+    expect(successMessage).toBeInTheDocument();
+  });
 });

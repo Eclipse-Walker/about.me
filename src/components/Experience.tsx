@@ -1,5 +1,5 @@
-import { Building2, Calendar, ChevronRight, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Building2, Calendar, ChevronRight, MapPin } from 'lucide-react';
 import { resumeData } from '../data/resume';
 import {
   sectionTitleVariants,

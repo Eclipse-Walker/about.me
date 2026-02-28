@@ -1,5 +1,5 @@
-import { ExternalLink, GitBranch } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
+import { ExternalLink, GitBranch } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
 import 'react-github-calendar/tooltips.css';
