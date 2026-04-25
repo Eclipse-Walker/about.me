@@ -42,6 +42,9 @@
 }
 
 .github-calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: var(--space-lg);
   overflow-x: auto;
   overflow-y: hidden;
@@ -49,7 +52,7 @@
 }
 
 .github-calendar-wrapper .react-activity-calendar {
-  width: max-content;
+  max-width: 100%;
   color: var(--text-secondary);
   font-family: var(--font-mono);
 }
