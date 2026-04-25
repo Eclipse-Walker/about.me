@@ -15,12 +15,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.PUBLIC_EMAILJS_SERVICE_ID }}
-      PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.PUBLIC_EMAILJS_TEMPLATE_ID }}
-      PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.PUBLIC_EMAILJS_PUBLIC_KEY }}
-      PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.PUBLIC_RECAPTCHA_SITE_KEY }}
-      PUBLIC_ALLOWED_ORIGINS: https://${{ github.repository_owner }}.github.io
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -57,6 +51,12 @@ jobs:
 
       - name: Build
         run: bun run build
+        env:
+          PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.PUBLIC_EMAILJS_SERVICE_ID }}
+          PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.PUBLIC_EMAILJS_TEMPLATE_ID }}
+          PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.PUBLIC_EMAILJS_PUBLIC_KEY }}
+          PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.PUBLIC_RECAPTCHA_SITE_KEY }}
+          PUBLIC_ALLOWED_ORIGINS: https://${{ github.repository_owner }}.github.io
 
       - name: Commit version bump to main
         run: |
