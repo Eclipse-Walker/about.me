@@ -1,3 +1,12 @@
+// Self-hosted fonts (replaces the Google Fonts @import; keeps CSP at 'self').
+// Latin subset only — the site content is English/code.
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
 import './styles/variables.css';
 import './styles/animations.css';
 import './styles/terminal.css';
