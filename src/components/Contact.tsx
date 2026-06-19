@@ -19,6 +19,7 @@ interface FormData {
 }
 
 const SUBMIT_THROTTLE_MS = 15000;
+const STATUS_RESET_MS = 3000;
 const MAX_NAME_LENGTH = 120;
 const MAX_MESSAGE_LENGTH = 3000;
 
@@ -53,6 +54,17 @@ export function Contact() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const showStatus = (status: 'success' | 'error', message: string) => {
+    setSubmitStatus(status);
+    setSubmitMessage(message);
+    setTimeout(() => setSubmitStatus('idle'), STATUS_RESET_MS);
+  };
+
+  const fail = (message: string) => {
+    setIsSubmitting(false);
+    showStatus('error', message);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus('idle');
@@ -68,28 +80,20 @@ export function Contact() {
 
     if (website.trim()) {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setSubmitMessage('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
       setWebsite('');
       recaptchaRef.current?.reset();
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      showStatus('success', 'Message sent successfully!');
       return;
     }
 
     if (!isAllowedOrigin) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('This form is not available from this site origin.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('This form is not available from this site origin.');
       return;
     }
 
     if (now - lastSubmitAt < SUBMIT_THROTTLE_MS) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Please wait a few seconds before sending again.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Please wait a few seconds before sending again.');
       return;
     }
 
@@ -98,10 +102,7 @@ export function Contact() {
       !normalizedFormData.email ||
       !normalizedFormData.message
     ) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Please complete all required fields.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Please complete all required fields.');
       return;
     }
 
@@ -109,10 +110,7 @@ export function Contact() {
       normalizedFormData.name.length > MAX_NAME_LENGTH ||
       normalizedFormData.message.length > MAX_MESSAGE_LENGTH
     ) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Input exceeds allowed length.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Input exceeds allowed length.');
       return;
     }
 
@@ -122,26 +120,17 @@ export function Contact() {
     const recaptchaToken = recaptchaRef.current?.getValue();
 
     if (!serviceId || !templateId || !publicKey) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Email service is not configured yet.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Email service is not configured yet.');
       return;
     }
 
     if (!recaptchaSiteKey) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Captcha is not configured yet.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Captcha is not configured yet.');
       return;
     }
 
     if (!recaptchaToken) {
-      setIsSubmitting(false);
-      setSubmitStatus('error');
-      setSubmitMessage('Please verify that you are not a robot.');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      fail('Please verify that you are not a robot.');
       return;
     }
 
@@ -160,17 +149,14 @@ export function Contact() {
         },
       );
 
-      setSubmitStatus('success');
-      setSubmitMessage('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
       recaptchaRef.current?.reset();
+      showStatus('success', 'Message sent successfully!');
     } catch {
-      setSubmitStatus('error');
-      setSubmitMessage('Unable to send your message. Please try again.');
       recaptchaRef.current?.reset();
+      showStatus('error', 'Unable to send your message. Please try again.');
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus('idle'), 3000);
     }
   };
 

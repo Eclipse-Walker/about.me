@@ -36,14 +36,15 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
       setIsScrolled(window.scrollY > 50);
 
-      const sections = navLinks.map((link) => document.getElementById(link.id));
       const scrollPosition = window.scrollY + 100;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
+      for (let i = navLinks.length - 1; i >= 0; i--) {
+        const section = document.getElementById(navLinks[i].id);
         if (section && section.offsetTop <= scrollPosition) {
           setActiveSection(navLinks[i].id);
           break;
@@ -51,7 +52,15 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
