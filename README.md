@@ -1,14 +1,25 @@
-# Rsbuild project
+# about.me
+
+Personal portfolio of **Phisanurat W.** — a terminal/code-themed single-page site
+built with React 19 and Rsbuild, deployed to GitHub Pages.
+
+## Tech stack
+
+- **Framework:** React 19
+- **Bundler:** [Rsbuild](https://rsbuild.rs) (Rspack)
+- **Animation:** Framer Motion
+- **Tooling:** Biome (lint + format), TypeScript (strict), Rstest + Testing Library
+- **Contact form:** EmailJS + Google reCAPTCHA v2
 
 ## Setup
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 bun install
 ```
 
-Set environment variables for EmailJS:
+Configure environment variables for the contact form:
 
 ```bash
 cp .env.example .env
@@ -24,47 +35,32 @@ Required variables:
 
 EmailJS SDK docs: https://www.emailjs.com/docs/sdk/installation/
 
-Security notes:
+## Scripts
 
-- `PUBLIC_*` variables are embedded into client bundles. Do not store secrets in them.
-- Restrict allowed domains in EmailJS dashboard to your real site origins only.
-- Configure rate limits/anti-spam settings in EmailJS template/service.
+| Command | Description |
+| --- | --- |
+| `bun run dev` | Start the dev server at [http://localhost:3000](http://localhost:3000) |
+| `bun run build` | Build for production into `dist/` |
+| `bun run preview` | Preview the production build locally |
+| `bun run typecheck` | Type-check with `tsc --noEmit` |
+| `bun run lint` | Lint and format check with Biome |
+| `bun run format` | Auto-format with Biome |
+| `bun run test` | Run the test suite (Rstest) |
+| `bun run check` | Run typecheck + lint + test (the CI gate) |
 
-## Get started
+## Security notes
 
-Start the dev server, and the app will be available at [http://localhost:3000](http://localhost:3000).
+- `PUBLIC_*` variables are embedded into the client bundle. **Do not store secrets in them.**
+- The contact form sends a reCAPTCHA token (`g-recaptcha-response`) to EmailJS. For the
+  token to actually be verified, **enable reCAPTCHA verification in the EmailJS template**
+  — otherwise the captcha is decorative only.
+- Restrict allowed domains in the EmailJS dashboard to your real site origins.
+- Configure rate limits / anti-spam settings in the EmailJS service/template.
+- The form also includes a client-side honeypot field, submission throttle, input-length
+  limits, and an origin allowlist (`PUBLIC_ALLOWED_ORIGINS`).
 
-```bash
-bun run dev
-```
+## Deployment
 
-Build the app for production:
-
-```bash
-bun run build
-```
-
-Run lint checks:
-
-```bash
-bun run lint
-```
-
-Run test suite:
-
-```bash
-bun run test
-```
-
-Preview the production build locally:
-
-```bash
-bun run preview
-```
-
-## Learn more
-
-To learn more about Rsbuild, check out the following resources:
-
-- [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
-- [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which runs typecheck → lint →
+test → audit, bumps the patch version, builds, and publishes `dist/` to the `gh-pages`
+branch.

@@ -3,6 +3,7 @@ import { ExternalLink, GitBranch } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
 import 'react-github-calendar/tooltips.css';
+import { resumeData } from '../data/resume';
 import {
   blockVariants,
   sectionTitleVariants,
@@ -11,7 +12,12 @@ import {
 import { TerminalWindow } from './TerminalWindow';
 import './GitHubContributions.css';
 
-const GITHUB_USERNAME = 'eclipse-walker';
+// Derived from the canonical GitHub URL in resume data so there is a single
+// source of truth. Normalized to lowercase since GitHub handles are
+// case-insensitive.
+const GITHUB_USERNAME =
+  resumeData.links.github.replace(/\/+$/, '').split('/').pop()?.toLowerCase() ??
+  '';
 
 type ColorScheme = 'light' | 'dark';
 
