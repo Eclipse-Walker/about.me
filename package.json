@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "check": "bun run lint && bun run test",
+    "check": "bun run typecheck && bun run lint && bun run test",
+    "typecheck": "tsc --noEmit",
     "dev": "rsbuild dev --open --port 3000",
     "format": "biome format --write",
     "lint": "biome check .",

@@ -12,6 +12,11 @@ export function Hero() {
   const fullText = `Hello, I'm ${resumeData.name}`;
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      setDisplayText(fullText);
+      return;
+    }
+
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
       if (currentIndex <= fullText.length) {
@@ -23,15 +28,20 @@ export function Hero() {
     }, 80);
 
     return () => clearInterval(typingInterval);
-  }, [fullText]);
+  }, [fullText, shouldReduceMotion]);
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      setShowCursor(false);
+      return;
+    }
+
     const cursorInterval = setInterval(() => {
       setShowCursor((prev) => !prev);
     }, 530);
 
     return () => clearInterval(cursorInterval);
-  }, []);
+  }, [shouldReduceMotion]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact');
