@@ -8,6 +8,7 @@ import {
   User,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { scrollToElementId, scrollToY } from '../lib/smoothScroll';
 import { ThemeToggle } from './ThemeToggle';
 import './Navbar.css';
 
@@ -65,17 +66,12 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
   }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
+    scrollToElementId(id);
     setIsMobileMenuOpen(false);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToY(0);
     setIsMobileMenuOpen(false);
   };
 
@@ -94,13 +90,18 @@ export function Navbar({ theme, onThemeToggle }: NavbarProps) {
           className={`navbar-mobile-toggle ${isMobileMenuOpen ? 'open' : ''}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="navbar-links"
         >
           <span className="hamburger-line" />
           <span className="hamburger-line" />
           <span className="hamburger-line" />
         </button>
 
-        <div className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div
+          id="navbar-links"
+          className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}
+        >
           {navLinks.map((link) => {
             const IconComponent = link.icon;
             return (
