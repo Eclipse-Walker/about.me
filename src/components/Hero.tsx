@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronDown, Github, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { resumeData } from '../data/resume';
+import { scrollToElementId } from '../lib/smoothScroll';
 import { TerminalWindow } from './TerminalWindow';
 import './Hero.css';
 
@@ -43,14 +44,7 @@ export function Hero() {
     return () => clearInterval(cursorInterval);
   }, [shouldReduceMotion]);
 
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-  };
+  const scrollToContact = () => scrollToElementId('contact');
 
   return (
     <section className="hero">

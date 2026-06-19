@@ -11,6 +11,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Respect users who prefer reduced motion: near-instant CSS animations and
+   transitions, and disable native smooth scrolling. (Framer Motion handles
+   its own animations via MotionConfig reducedMotion="user".) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: must override per-element animation/transition declarations regardless of specificity */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: see above */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: see above */
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   font-family: var(--font-system);
   font-size: 16px;

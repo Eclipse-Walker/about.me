@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rsbuild build",
     "check": "bun run typecheck && bun run lint && bun run test",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tests/tsconfig.json --noEmit",
     "dev": "rsbuild dev --open --port 3000",
     "format": "biome format --write",
     "lint": "biome check .",
